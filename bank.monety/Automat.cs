@@ -1,41 +1,65 @@
-ï»¿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace bank.monety
 {
     internal class Automat
     {
-        private int _iloscMonet;
-        private readonly decimal[] _przyjmowaneMonety = new decimal[] { 5.0m, 2.0m, 1.0m, 0.5m, 0.2m, 0.1m };
-        // StwÃ³rz metodÄ™ WrzucMonete
-        public void WrzucMonete(bankmonety konto, string moneta)
+        private readonly decimal[] _przyjmowaneMonety =
         {
-            //zamieniamy , na . Å¼eby moÅ¼na byÅ‚o sparsowaÄ‡ monete
-            string monetaUjednoliczonyZapis = moneta.Replace(',', '.');
+            5m, 2m, 1m, 0.50m, 0.20m, 0.10m
+        };
 
-            // Sprawdzamy czy monetÄ™ da siÄ™ W OGÃ“LE sparsowaÄ‡ na jakiÅ› decimal
-            bool czyUdanyParse = decimal.TryParse(monetaUjednoliczonyZapis, CultureInfo.InvariantCulture,        out decimal wartoscMonety);
+        private readonly Dictionary<decimal, int> _liczbaMonet = new();
 
-            if (!czyUdanyParse)
+        public Automat()
+        {
+            foreach (decimal moneta in _przyjmowaneMonety)
             {
-                Console.WriteLine("Nieudany odczyt monety.");
+                _liczbaMonet[moneta] = 0;
+            }
+        }
+
+        public void WrzucMonete(KontoBankowe konto, string tekstMonety)
+        {
+            string ujednoliconyTekst = tekstMonety.Replace(',', '.');
+
+            if (!decimal.TryParse(
+                    ujednoliconyTekst,
+                    NumberStyles.Number,
+                    CultureInfo.InvariantCulture,
+                    out decimal wartoscMonety))
+            {
+                Console.WriteLine($"Nieudany odczyt: {tekstMonety}");
                 return;
             }
 
-            // SprawdÅº czy monety sÄ… z zakresu _przyjmowaneMonety
-            foreach (decimal nominal in _przyjmowaneMonety)
+            if (!_liczbaMonet.ContainsKey(wartoscMonety))
             {
-                // JeÅ¼eli tak, to zwiÄ™ksz saldo konta i iloÅ›Ä‡ monet w automacie
-                if (wartoscMonety == nominal)
-                {
-                    konto.Saldo += nominal;
-                    _iloscMonet++;
-                    Console.WriteLine($"pryjete monete: {wartoscMonety}. wrzucono: {moneta}, a ujednoliczony zapis: {monetaUjednoliczonyZapis}");
-                }
+                Console.WriteLine($"Z³a moneta: {wartoscMonety}");
+                return;
             }
+
+            konto.Wplac(wartoscMonety);
+            _liczbaMonet[wartoscMonety]++;
+            Console.WriteLine($"Moneta przyjêta: {wartoscMonety:0.00} z³");
+        }
+
+        public void PokazMonety()
+        {
+            decimal lacznaWartosc = 0m;
+
+            Console.WriteLine("Monety w automacie:");
+
+            foreach (decimal nomina³ in _przyjmowaneMonety)
+            {
+                int liczba = _liczbaMonet[nomina³];
+                decimal wartosc = liczba * nomina³;
+                lacznaWartosc += wartosc;
+
+                Console.WriteLine($"{nomina³:0.00} z³: {liczba}");
+            }
+
+            Console.WriteLine($"£¹czna wartoœæ: {lacznaWartosc:0.00} z³");
         }
     }
 }
-

@@ -1,18 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace bank.monety
 {
-    internal class bankmonety
+    internal class KontoBankowe
     {
         private decimal _saldo;
-        private string _numer; // generowany automatycznie przy tworzeniu konta
+        private static int _kolejnyNumerKonta = 1;
 
-        public decimal Saldo
+        public KontoBankowe()
         {
-            get { return _saldo; }
-            set { _saldo = value; }
+            NumerKonta = _kolejnyNumerKonta.ToString();
+            _kolejnyNumerKonta++;
+        }
+
+        public string NumerKonta { get; }
+
+        public void Wplac(decimal kwota)
+        {
+            _saldo += kwota;
+        }
+
+        public decimal StanKonta()
+        {
+            return _saldo;
         }
     }
 }
