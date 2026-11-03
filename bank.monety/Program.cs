@@ -1,38 +1,34 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
 
 namespace bank.monety
 {
     internal class Program
     {
-        static void Main(string[] args)
-        {
-          bankmonety kontobankowe = new bankmonety();//tworzenie konta
-            
-            Automat automat = new Automat(kontobankowe);//tworzenie automatu
-            automat.wrzucmonete(kontobankowe, "0,5");
+            static void Main(string[] args)
+            {
+                // Tworzenie konta
+                bankmonety kontoBankowe = new bankmonety();
+                bankmonety kontoBankowe2 = new bankmonety();
+                bankmonety kontoBankowe3 = new bankmonety();
+            // Tworzenie automatu do wpłat
+            Automat automat = new Automat();
 
-            Console.WriteLine(kontobankowe.stankonta());//wyświetlenie stanu konta
-
-
-
-
-
+                automat.WrzucMonete(kontoBankowe, "5");
+                automat.WrzucMonete(kontoBankowe, "0.5");
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            // Wyświetlamy stan konta (jeszcze nie zrobione)
+            //    Console.WriteLine(kontoBankowe.Saldo);
+        }
         }
     }
-}
+
+
+
+
+
+
+
+
+
+
