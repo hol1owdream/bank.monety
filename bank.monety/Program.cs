@@ -14,7 +14,7 @@ namespace bank.monety
             automat.WrzucMonete(kontoPierwsze, "0.50");
             automat.WrzucMonete(kontoPierwsze, "2");
             automat.WrzucMonete(kontoPierwsze, "3");
-            automat.WrzucMonete(kontoPierwsze, "kqw");
+            automat.WrzucMonete(kontoPierwsze, "abc");
 
             Console.WriteLine();
             Console.WriteLine($"Stan pierwszego konta: {kontoPierwsze.StanKonta():0.00} zł");
